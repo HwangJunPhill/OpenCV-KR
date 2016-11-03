@@ -11,8 +11,8 @@ OpenCV는 모듈형 구조를 가지고 있으며, 각각의 공유되거나 정적인 라이브러리를 포함
 
  * Calib3d: 기본적인 multiple-view 기하학 알고리즘, 단일 및 스트레오 카메라 눈금화, 객체 포즈 추정, 스트레오 대응 알고리즘, 3D 재건의 요소.
   (multiple-view  위, 아래, 옆에서 봤을 때를 말하는 것 같다)
-  
- * feature2d: 가장 두드러진 특징 탐지기, descriptors and descriptor matchers 
+
+ * feature2d: 가장 두드러진 특징 탐지기, descriptors and descriptor matchers
 
  * Objdetect: 미리 정의된 클래스들의 인스터스와 객체들을 검출.
 
@@ -31,15 +31,15 @@ OpenCV는 모듈형 구조를 가지고 있으며, 각각의 공유되거나 정적인 라이브러리를 포함
 ##API Concepts
 ###cv Namespace
 
-모든 OpenCV 클래스들과 함수들은 cv namespace 안에 들어있습니다. 
-그러므로 당신의 코드에서 이 기능에 접근하려면 cv::specifier 이나 using namespace cv 를 이용해야 합니다. 
+모든 OpenCV 클래스들과 함수들은 cv namespace 안에 들어있습니다.
+그러므로 당신의 코드에서 이 기능에 접근하려면 cv::specifier 이나 using namespace cv 를 이용해야 합니다.
    ```
   #include "opencv2/core.hpp"
   ...
   cv::Mat H = cv::findHomography(points1, points2, CV_RANSAC, 5);
   ...
 ```
-   
+
 또는
 ```
   #include "opencv2/core.hpp"
@@ -66,7 +66,7 @@ OpenCV는 자동적으로 모든 메모리를 처리한다.
 ```
   // 8MB의 커다란 메트릭스를 생성한다.
   Mat A(1000, 1000, CV_64F);
-     
+
   // 같은 메트릭스에 대해 다른 헤더를 생성한다.
   // 메트릭스 사이즈에 상관하지 않는 즉각적인 동작이다.
   Mat B = A;
@@ -81,7 +81,7 @@ OpenCV는 자동적으로 모든 메모리를 처리한다.
   //  이제 빈 메트릭스 B를 만들자(메모리 버퍼에는 참조 되어 있지 않다),
   //  C는 단지 원래의 A에 한 행임에도 불구하고 A의 수정된 버전은 여전히 C를 참조한다.
   B.release();
-    
+
   // 마침내, 전체적으로 C를 복사한다. 결과적으로 크게 수정되었다.
   // 메트릭스는 누가 참조하지 않았기 때문에 할당이 해제될 것이다.
   C = C.clone();
@@ -109,14 +109,14 @@ OpenCV는 자동으로 메모리 할당된 것을 해제하며 또한 대부분의 시간동안 output 함수
 ```
   #include "opencv2/imgproc.hpp"
   #include "opencv2/highgui.hpp"
-  
+
   using namespace cv;
-   
+
   int main(int, char**)  
   {
     VideoCapture cap(0);
     if(!cap.isOpened()) return -1;
-      
+
     Mat frame, edges;
     namedWindow("edges",1);
     for(;;)
@@ -131,3 +131,8 @@ OpenCV는 자동으로 메모리 할당된 것을 해제하며 또한 대부분의 시간동안 output 함수
     return 0;
  }
 ```
+
+
+###Fixed Pixel Types. Limited Use of Templates
+
+템플릿은 효율적이고 안전한 자료구조, 알고리즘과 강력한 구현을 가능케 해주는 C++의 훌륭한 특징이다. 그러나 과도한 템플릿의 사용은 극적인 컴파일 시간과 코드 사이즈의 증가를 야기 할 수 있다. 게다가 템플릿이 베타적으로 사용될 때, 인터페이스와 구현을 분리하는 것은 어렵다. 이것은 기본 알고리즘에는 좋지만 단 하나의 알고리즘이 수천줄의 코드에 도달할 수 있는 컴퓨터 비전 라이브러리들에는 적합하지 않다. 또한 파이썬, 자바, 매트랩과 같이 템플릿을 가지고 있지 않거나 템플릿의 능력이 제한되어 있는 다른 언어들의 바인딩 개발을 단순히 하기 위해서 현재 OpenCV의 구현은 단순함과 runtime dispatching over templates을 기반으로 한다.
